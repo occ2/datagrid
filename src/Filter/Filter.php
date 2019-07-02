@@ -34,6 +34,11 @@ abstract class Filter
 	 * @var callable
 	 */
 	protected $condition_callback;
+	
+	/**
+	 * @var callable
+	 */
+	protected $valuesCallback;
 
 	/**
 	 * @var string
@@ -92,6 +97,11 @@ abstract class Filter
 		$this->column = $column;
 	}
 
+	public function setValuesCallback(callable $callback)
+	{
+		$this->valuesCallback = $callback;
+		return $this;
+	}
 
 	/**
 	 * Get filter key
@@ -153,7 +163,12 @@ abstract class Filter
 	 */
 	public function getValue()
 	{
-		return $this->value;
+		if (is_callable($this->valuesCallback)) {
+			$callback = $this->valuesCallback;
+			return $callback($this->value);
+		} else {
+			return $this->value;
+		}
 	}
 
 
