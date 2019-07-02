@@ -150,7 +150,12 @@ abstract class Filter
 	 */
 	public function setValue($value)
 	{
-		$this->value = $value;
+		if (is_callable($this->valuesCallback)) {
+			$callback = $this->valuesCallback;
+			$this->value = $callback($value);
+		} else {
+			$this->value = $value;
+		}
 		$this->value_set = true;
 
 		return $this;
@@ -163,12 +168,7 @@ abstract class Filter
 	 */
 	public function getValue()
 	{
-		if (is_callable($this->valuesCallback)) {
-			$callback = $this->valuesCallback;
-			return $callback($this->value);
-		} else {
-			return $this->value;
-		}
+		return $this->value;
 	}
 
 
