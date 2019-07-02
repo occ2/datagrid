@@ -34,11 +34,6 @@ abstract class Filter
 	 * @var callable
 	 */
 	protected $condition_callback;
-	
-	/**
-	 * @var callable
-	 */
-	protected $valuesCallback;
 
 	/**
 	 * @var string
@@ -97,12 +92,6 @@ abstract class Filter
 		$this->column = $column;
 	}
 
-	public function setValuesCallback(callable $callback)
-	{
-		$this->valuesCallback = $callback;
-		return $this;
-	}
-
 	/**
 	 * Get filter key
 	 * @return mixed
@@ -150,12 +139,7 @@ abstract class Filter
 	 */
 	public function setValue($value)
 	{
-		if (is_callable($this->valuesCallback)) {
-			$callback = $this->valuesCallback;
-			$this->value = $callback($value);
-		} else {
-			$this->value = $value;
-		}
+		$this->value = $value;
 		$this->value_set = true;
 
 		return $this;
