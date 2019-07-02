@@ -108,8 +108,8 @@ final class DoctrineCollectionDataSource extends FilterableDataSource implements
 			try {
 				$date = DateTimeHelper::tryConvertToDateTime($value, [$filter->getPhpFormat()]);
 
-				$from = Criteria::expr()->gte($filter->getColumn(), $date->format('Y-m-d 00:00:00'));
-				$to = Criteria::expr()->lte($filter->getColumn(), $date->format('Y-m-d 23:59:59'));
+				$from = Criteria::expr()->gte($filter->getColumn(), new \DateTime($date->format('Y-m-d 00:00:00')));
+				$to = Criteria::expr()->lte($filter->getColumn(), new \DateTime($date->format('Y-m-d 23:59:59')));
 
 				$this->criteria->andWhere($from)->andWhere($to);
 			} catch (DataGridDateTimeHelperException $ex) {
@@ -134,7 +134,7 @@ final class DoctrineCollectionDataSource extends FilterableDataSource implements
 				$date_from = DateTimeHelper::tryConvertToDateTime($value_from, [$filter->getPhpFormat()]);
 				$date_from->setTime(0, 0, 0);
 
-				$expr = Criteria::expr()->gte($filter->getColumn(), $date_from->format('Y-m-d H:i:s'));
+				$expr = Criteria::expr()->gte($filter->getColumn(), new \DateTime($date_from->format('Y-m-d H:i:s')));
 				$this->criteria->andWhere($expr);
 			} catch (DataGridDateTimeHelperException $ex) {
 				// ignore the invalid filter value
@@ -146,7 +146,7 @@ final class DoctrineCollectionDataSource extends FilterableDataSource implements
 				$date_to = DateTimeHelper::tryConvertToDateTime($value_to, [$filter->getPhpFormat()]);
 				$date_to->setTime(23, 59, 59);
 
-				$expr = Criteria::expr()->lte($filter->getColumn(), $date_to->format('Y-m-d H:i:s'));
+				$expr = Criteria::expr()->lte($filter->getColumn(), new \DateTime($date_to->format('Y-m-d H:i:s')));
 				$this->criteria->andWhere($expr);
 			} catch (DataGridDateTimeHelperException $ex) {
 				// ignore the invalid filter value
